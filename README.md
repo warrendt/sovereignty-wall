@@ -35,11 +35,16 @@ npm install
 ADMIN_KEY=local-dev-key npm start     # http://localhost:3000
 npm test                              # node --test, no extra frameworks
 node scripts/verify.mjs http://localhost:3000 local-dev-key
+node scripts/clear.mjs  http://localhost:3000 local-dev-key
 ```
 
 `scripts/verify.mjs` drives the real HTTP surface end to end — pages, assets, a
 live submission over SSE, admin deletion — and removes the answers it creates.
 It is safe to point at the live site.
+
+`scripts/clear.mjs` wipes every answer through the admin API. Use it right
+before a session starts; connected projectors update live over SSE. It refuses
+to delete anything if the admin key is wrong.
 
 ## How it works
 

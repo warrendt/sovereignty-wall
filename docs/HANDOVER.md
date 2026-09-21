@@ -35,8 +35,12 @@ az webapp config appsettings list \
 4. **If something inappropriate appears** — open the admin URL on your laptop or
    phone (keep that tab open *before* you start) and hit Delete. It disappears
    from the projector within a second, no refresh needed.
-5. **Clearing the wall** between sessions: delete entries from admin, or
-   `az webapp restart` does *not* clear it (data persists in `/home/data` by design).
+5. **Clearing the wall** — one command wipes every answer:
+   ```bash
+   node scripts/clear.mjs https://sovereignty-wall-7y580s.azurewebsites.net "$ADMIN_KEY"
+   ```
+   Connected projectors update live, no refresh. Note that `az webapp restart`
+   does *not* clear it — data persists in `/home/data` by design.
 
 ### Pre-flight check (30 seconds)
 
@@ -46,6 +50,9 @@ node scripts/verify.mjs https://sovereignty-wall-7y580s.azurewebsites.net "$ADMI
 
 This creates a test answer, proves it arrives over the live SSE stream, then
 deletes it again. It should print `20/20 checks passed`.
+
+Run `clear.mjs` immediately afterwards — the URL is already discoverable and
+early arrivals do submit before the session starts.
 
 ---
 
@@ -256,4 +263,5 @@ views/               wall, submit, qr, admin
 public/css|js/       plain CSS and vanilla ES modules
 test/                node --test suites (100 tests)
 scripts/verify.mjs   end-to-end checker for any running instance
+scripts/clear.mjs    wipes every answer via the admin API
 ```
