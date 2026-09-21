@@ -121,7 +121,12 @@ test('the QR page and SVG are generated from the incoming host', async (t) => {
 
   const svg = await fetch(`${base}/qr.svg`);
   assert.equal(svg.headers.get('content-type'), 'image/svg+xml; charset=utf-8');
-  assert.ok((await svg.text()).trim().startsWith('<?xml'));
+
+  const markup = await svg.text();
+  assert.ok(markup.startsWith('<svg'));
+  assert.ok(markup.includes('xmlns="http://www.w3.org/2000/svg"'));
+  // No intrinsic width/height, so the stylesheet decides how big it renders.
+  assert.ok(markup.includes('viewBox='));
 });
 
 test('a forwarded host changes the generated QR, proving it is not hardcoded', async (t) => {

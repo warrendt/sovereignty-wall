@@ -43,7 +43,7 @@ export const resolveDataDir = (env = process.env) => {
   const explicit = String(env.DATA_DIR ?? '').trim();
   if (explicit !== '') return path.resolve(explicit);
   if (String(env.WEBSITE_INSTANCE_ID ?? '').trim() !== '') return '/home/data';
-  return path.join(ROOT_DIR, '..', 'data');
+  return path.join(ROOT_DIR, 'data');
 };
 
 export const loadConfig = (env = process.env) => {
@@ -51,8 +51,8 @@ export const loadConfig = (env = process.env) => {
 
   return Object.freeze({
     rootDir: ROOT_DIR,
-    viewsDir: path.join(ROOT_DIR, '..', 'views'),
-    publicDir: path.join(ROOT_DIR, '..', 'public'),
+    viewsDir: path.join(ROOT_DIR, 'views'),
+    publicDir: path.join(ROOT_DIR, 'public'),
     dataDir: resolveDataDir(env),
     port: positiveInt(env.PORT, 3000),
     questions: QUESTIONS,
