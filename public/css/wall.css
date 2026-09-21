@@ -270,8 +270,10 @@ body.wall {
 
 .join-qr {
   display: block;
-  width: 7rem;
-  height: 7rem;
+  /* Deliberately generous: this is scanned from across a room, off a
+     projector, by phones that are nowhere near the screen. */
+  width: 9.5rem;
+  height: 9.5rem;
   border-radius: 0.4rem;
 }
 
