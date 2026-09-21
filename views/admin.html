@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Moderate — Sovereignty Wall</title>
+    <link rel="stylesheet" href="/css/admin.css?v={{ASSET_VERSION}}" />
+  </head>
+  <body class="admin" data-admin-key="{{ADMIN_KEY}}">
+    <header class="admin-bar">
+      <h1>Moderate</h1>
+      <p><strong id="admin-count">{{COUNT}}</strong> answer(s) live. Newest first.</p>
+      <p class="admin-note">Deleting removes the answer from the wall immediately.</p>
+    </header>
+
+    <ul class="admin-list" id="admin-list">
+      {{&ROWS}}
+    </ul>
+
+    <script type="module" src="/js/admin.js?v={{ASSET_VERSION}}"></script>
+  </body>
+</html>

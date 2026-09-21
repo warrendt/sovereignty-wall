@@ -1,0 +1,20 @@
+{
+  "name": "sovereignty-wall",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Live audience word-wall for the Sovereignty session.",
+  "type": "module",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test test/"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "qrcode": "^1.5.4"
+  }
+}

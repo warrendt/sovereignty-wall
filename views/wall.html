@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#070b12" />
+    <title>Sovereignty Wall</title>
+    <link rel="stylesheet" href="/css/wall.css?v={{ASSET_VERSION}}" />
+  </head>
+  <body class="wall">
+    <header class="bar">
+      <h1 class="bar-title">Sovereignty</h1>
+      <p class="bar-stat"><span id="count">0</span> <span class="bar-stat-label">answers</span></p>
+      <p class="bar-live">
+        <span class="dot" id="live-dot" data-state="connecting" aria-hidden="true"></span>
+        <span class="bar-live-label" id="live-label">Connecting</span>
+      </p>
+    </header>
+
+    <main class="zones">
+      <section class="zone" data-question="q1" aria-labelledby="zone-q1-heading">
+        <h2 class="zone-heading" id="zone-q1-heading">{{Q1_PROMPT}}</h2>
+        <div class="scatter" data-role="scatter" role="list"></div>
+        <p class="zone-empty" data-role="empty">Scan the QR to add yours</p>
+      </section>
+
+      <section class="zone" data-question="q2" aria-labelledby="zone-q2-heading">
+        <h2 class="zone-heading" id="zone-q2-heading">{{Q2_PROMPT}}</h2>
+        <div class="scatter" data-role="scatter" role="list"></div>
+        <p class="zone-empty" data-role="empty">Scan the QR to add yours</p>
+      </section>
+    </main>
+
+    <aside class="join">
+      <img
+        class="join-qr"
+        src="/qr.svg?v={{ASSET_VERSION}}"
+        alt="QR code linking to the answer form at {{SUBMIT_URL}}"
+        width="220"
+        height="220"
+      />
+      <p class="join-text">
+        <span class="join-lead">Add yours</span>
+        <span class="join-url">{{SUBMIT_HOST}}/submit</span>
+      </p>
+    </aside>
+
+    <script type="module" src="/js/wall.js?v={{ASSET_VERSION}}"></script>
+  </body>
+</html>

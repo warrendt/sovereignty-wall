@@ -1,0 +1,230 @@
+/* Audience submission form — phone first. */
+
+:root {
+  --bg: #070b12;
+  --card: #0f1725;
+  --ink: #eef3ff;
+  --muted: #93a6c8;
+  --line: rgba(255, 255, 255, 0.14);
+  --accent: #7fd1ff;
+  --accent-ink: #06121c;
+  --bad: #ff9fb2;
+  --ok: #7ef0b0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body.page {
+  margin: 0;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  color: var(--ink);
+  background:
+    radial-gradient(38rem 28rem at 12% -8%, rgba(74, 132, 255, 0.22), transparent 62%),
+    radial-gradient(34rem 24rem at 92% 106%, rgba(126, 240, 200, 0.16), transparent 62%),
+    var(--bg);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.card {
+  width: 100%;
+  max-width: 34rem;
+  padding: 1.6rem 1.4rem 1.8rem;
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: var(--card);
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.45);
+}
+
+.card-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.card-sub {
+  margin: 0 0 1.6rem;
+  color: var(--muted);
+}
+
+/* --------------------------------------------------------------- fields */
+
+.field {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 0.25rem;
+}
+
+.hint {
+  margin: 0 0 0.6rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.input {
+  width: 100%;
+  /* >=48px tap target, and 16px+ font stops iOS zooming on focus. */
+  min-height: 3.2rem;
+  padding: 0.8rem 1rem;
+  font: inherit;
+  font-size: 1.08rem;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid var(--line);
+  border-radius: 0.75rem;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.input::placeholder {
+  color: #6d7f9e;
+}
+
+.input:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.input:focus-visible,
+.button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.input[aria-invalid='true'] {
+  border-color: var(--bad);
+}
+
+.error {
+  margin: 0.45rem 0 0;
+  min-height: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--bad);
+}
+
+.error:empty {
+  display: none;
+}
+
+.error-form {
+  margin-bottom: 0.9rem;
+}
+
+/* -------------------------------------------------------------- actions */
+
+.button {
+  width: 100%;
+  min-height: 3.4rem;
+  padding: 0.9rem 1.25rem;
+  font: inherit;
+  font-size: 1.12rem;
+  font-weight: 750;
+  color: var(--accent-ink);
+  background: var(--accent);
+  border: none;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    filter 0.15s ease;
+}
+
+.button:hover {
+  filter: brightness(1.07);
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+.button[disabled] {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+.button-ghost {
+  color: var(--ink);
+  background: transparent;
+  border: 1.5px solid var(--line);
+}
+
+.button-ghost:hover {
+  background: rgba(255, 255, 255, 0.06);
+  filter: none;
+}
+
+/* --------------------------------------------------------------- thanks */
+
+.thanks {
+  text-align: center;
+  padding: 0.5rem 0 0;
+}
+
+.thanks[hidden] {
+  display: none;
+}
+
+.thanks:focus {
+  outline: none;
+}
+
+.thanks-mark {
+  margin: 0 auto 0.9rem;
+  width: 3.6rem;
+  height: 3.6rem;
+  display: grid;
+  place-items: center;
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--accent-ink);
+  background: var(--ok);
+  border-radius: 50%;
+}
+
+.thanks-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+}
+
+.thanks-sub {
+  margin: 0 0 1.6rem;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+
+  .button:active {
+    transform: none;
+  }
+}

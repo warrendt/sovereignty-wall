@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#070b12" />
+    <title>Add your answer — Sovereignty</title>
+    <link rel="stylesheet" href="/css/submit.css?v={{ASSET_VERSION}}" />
+  </head>
+  <body class="page">
+    <main class="card">
+      <h1 class="card-title">Sovereignty</h1>
+      <p class="card-sub">Two quick questions. Your answers go straight onto the wall.</p>
+
+      <form id="form" class="form" method="post" action="/api/answers" novalidate>
+        <div class="field">
+          <label class="label" for="q1">{{Q1_PROMPT}}</label>
+          <p class="hint" id="q1-hint">{{Q1_HINT}}</p>
+          <input
+            class="input"
+            id="q1"
+            name="q1"
+            type="text"
+            maxlength="{{Q1_MAXLEN}}"
+            placeholder="{{Q1_PLACEHOLDER}}"
+            autocomplete="off"
+            autocapitalize="none"
+            autocorrect="off"
+            spellcheck="false"
+            enterkeyhint="next"
+            aria-describedby="q1-hint q1-error"
+          />
+          <p class="error" id="q1-error" role="alert"></p>
+        </div>
+
+        <div class="field">
+          <label class="label" for="q2">{{Q2_PROMPT}}</label>
+          <p class="hint" id="q2-hint">{{Q2_HINT}}</p>
+          <input
+            class="input"
+            id="q2"
+            name="q2"
+            type="text"
+            maxlength="{{Q2_MAXLEN}}"
+            placeholder="{{Q2_PLACEHOLDER}}"
+            autocomplete="off"
+            enterkeyhint="send"
+            aria-describedby="q2-hint q2-error"
+          />
+          <p class="error" id="q2-error" role="alert"></p>
+        </div>
+
+        <p class="error error-form" id="form-error" role="alert"></p>
+
+        <button class="button" id="submit" type="submit">Add to the wall</button>
+      </form>
+
+      <section class="thanks" id="thanks" hidden tabindex="-1">
+        <p class="thanks-mark" aria-hidden="true">✓</p>
+        <h2 class="thanks-title">Thanks — it's on the wall.</h2>
+        <p class="thanks-sub">Look up at the screen.</p>
+        <button class="button button-ghost" id="again" type="button">Submit another</button>
+      </section>
+    </main>
+
+    <script type="module" src="/js/submit.js?v={{ASSET_VERSION}}"></script>
+  </body>
+</html>

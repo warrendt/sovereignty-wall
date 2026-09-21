@@ -1,0 +1,350 @@
+/* Sovereignty Wall — projector view.
+   Designed to be read from the back of a room: near-black background,
+   bright high-contrast accents, and type that scales with the viewport. */
+
+:root {
+  --bg: #070b12;
+  --ink: #eef3ff;
+  --muted: #93a6c8;
+  --line: rgba(255, 255, 255, 0.09);
+  --panel: rgba(255, 255, 255, 0.035);
+  --ok: #7ef0b0;
+  --warn: #ffd88a;
+  --bad: #ff9fb2;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Everything downstream is in rem, so this one line scales the whole wall
+     from a laptop preview up to a 4K projector. */
+  font-size: clamp(15px, 1.05vw, 28px);
+  height: 100%;
+}
+
+body.wall {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--ink);
+  background:
+    radial-gradient(60rem 40rem at 18% -10%, rgba(74, 132, 255, 0.16), transparent 60%),
+    radial-gradient(52rem 36rem at 88% 108%, rgba(126, 240, 200, 0.12), transparent 62%),
+    var(--bg);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ------------------------------------------------------------------ bar */
+
+.bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding: 1.1rem 1.6rem 0.7rem;
+}
+
+.bar-title {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.bar-stat {
+  margin: 0;
+  margin-left: auto;
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.bar-stat-label {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.bar-live {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  color: var(--muted);
+}
+
+.dot {
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: 50%;
+  background: var(--muted);
+  box-shadow: 0 0 0 0 currentColor;
+}
+
+.dot[data-state='live'] {
+  background: var(--ok);
+  animation: pulse 2.4s ease-out infinite;
+}
+
+.dot[data-state='polling'] {
+  background: var(--warn);
+}
+
+.dot[data-state='connecting'],
+.dot[data-state='offline'] {
+  background: var(--bad);
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(126, 240, 176, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 0.75rem rgba(126, 240, 176, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(126, 240, 176, 0);
+  }
+}
+
+/* ---------------------------------------------------------------- zones */
+
+.zones {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+  padding: 0.4rem 1.6rem 1.6rem;
+}
+
+.zone {
+  position: relative;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: var(--panel);
+}
+
+.zone-heading {
+  flex: 0 0 auto;
+  margin: 0 0 0.6rem;
+  font-size: 1.32rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.6rem;
+}
+
+.scatter {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.zone-empty {
+  position: absolute;
+  left: 1.1rem;
+  right: 1.1rem;
+  top: 58%;
+  transform: translateY(-50%);
+  margin: 0;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.zone-empty[hidden] {
+  display: none;
+}
+
+/* ---------------------------------------------------------------- items */
+
+.item {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  color: var(--accent, var(--ink));
+  text-shadow: 0 0.15rem 0.9rem rgba(0, 0, 0, 0.55);
+  transform: translate3d(var(--x, 0), var(--y, 0), 0) rotate(var(--rot, 0deg));
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.45s ease;
+  will-change: transform, opacity;
+}
+
+/* Phrases wrap and sit a little quieter than the single words. */
+.zone[data-question='q1'] .item {
+  white-space: nowrap;
+}
+
+.zone[data-question='q2'] .item {
+  white-space: normal;
+  max-width: 22ch;
+  text-align: center;
+  font-weight: 650;
+  letter-spacing: -0.005em;
+  line-height: 1.16;
+}
+
+.item.is-measuring {
+  visibility: hidden;
+}
+
+.item.is-entering {
+  animation: land 0.72s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+}
+
+@keyframes land {
+  0% {
+    opacity: 0;
+    transform: translate3d(var(--x, 0), var(--y, 0), 0) rotate(var(--rot, 0deg)) scale(0.35);
+  }
+  62% {
+    opacity: 1;
+    transform: translate3d(var(--x, 0), var(--y, 0), 0) rotate(var(--rot, 0deg)) scale(1.14);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(var(--x, 0), var(--y, 0), 0) rotate(var(--rot, 0deg)) scale(1);
+  }
+}
+
+/* A short glow so the room sees exactly which answer just landed. */
+.item.is-new {
+  animation:
+    land 0.72s cubic-bezier(0.2, 0.9, 0.25, 1) both,
+    flare 2.6s ease-out 0.4s both;
+}
+
+@keyframes flare {
+  0% {
+    text-shadow:
+      0 0 1.6rem currentColor,
+      0 0 3.2rem currentColor;
+  }
+  100% {
+    text-shadow: 0 0.15rem 0.9rem rgba(0, 0, 0, 0.55);
+  }
+}
+
+.item.is-leaving {
+  opacity: 0;
+  transform: translate3d(var(--x, 0), var(--y, 0), 0) rotate(var(--rot, 0deg)) scale(0.72);
+}
+
+/* ----------------------------------------------------------------- join */
+
+.join {
+  position: fixed;
+  right: 1.2rem;
+  bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+  padding: 0.7rem 1.1rem 0.7rem 0.7rem;
+  border-radius: 1rem;
+  background: #ffffff;
+  color: #070b12;
+  box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.5);
+}
+
+.join-qr {
+  display: block;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 0.4rem;
+}
+
+.join-text {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.join-lead {
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: #46536b;
+}
+
+.join-url {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  word-break: break-all;
+  max-width: 15ch;
+}
+
+/* ----------------------------------------------------------- responsive */
+
+@media (max-width: 900px) {
+  .zones {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    padding: 0.4rem 0.8rem 0.8rem;
+  }
+
+  .join {
+    right: 0.7rem;
+    bottom: 0.7rem;
+    padding: 0.5rem 0.8rem 0.5rem 0.5rem;
+  }
+
+  .join-qr {
+    width: 4.6rem;
+    height: 4.6rem;
+  }
+}
+
+/* ------------------------------------------------------- reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .item {
+    transition: opacity 0.2s linear;
+  }
+
+  .item.is-entering,
+  .item.is-new {
+    animation: appear 0.3s linear both;
+  }
+
+  .dot[data-state='live'] {
+    animation: none;
+  }
+
+  .item.is-leaving {
+    transform: translate3d(var(--x, 0), var(--y, 0), 0) rotate(var(--rot, 0deg));
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

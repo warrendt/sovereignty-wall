@@ -1,0 +1,140 @@
+/* Moderation view — plain and fast. Built for yanking something off the
+   projector in a hurry, not for looking pretty. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body.admin {
+  margin: 0;
+  padding: 1.5rem 1.25rem 4rem;
+  color: #eef3ff;
+  background: #070b12;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+
+.admin-bar {
+  max-width: 52rem;
+  margin: 0 auto 1.5rem;
+}
+
+.admin-bar h1 {
+  margin: 0 0 0.35rem;
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.admin-bar p {
+  margin: 0;
+  color: #93a6c8;
+}
+
+.admin-note {
+  font-size: 0.92rem;
+}
+
+.admin-list {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    'meta   action'
+    'text   action';
+  gap: 0.25rem 1rem;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.75rem;
+  background: #0f1725;
+}
+
+.row.is-gone {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.meta {
+  grid-area: meta;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+  color: #93a6c8;
+}
+
+.tag {
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+
+.tag-q1 {
+  color: #06121c;
+  background: #7fd1ff;
+}
+
+.tag-q2 {
+  color: #06121c;
+  background: #9ef0c8;
+}
+
+.text {
+  grid-area: text;
+  margin: 0;
+  font-size: 1.12rem;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.delete {
+  grid-area: action;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.1rem;
+  font: inherit;
+  font-weight: 700;
+  color: #1b0509;
+  background: #ff9fb2;
+  border: none;
+  border-radius: 0.6rem;
+  cursor: pointer;
+}
+
+.delete:hover {
+  filter: brightness(1.08);
+}
+
+.delete:focus-visible {
+  outline: 3px solid #7fd1ff;
+  outline-offset: 2px;
+}
+
+.delete[disabled] {
+  opacity: 0.5;
+  cursor: progress;
+}
+
+.empty {
+  padding: 2rem;
+  text-align: center;
+  color: #93a6c8;
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+  border-radius: 0.75rem;
+}
