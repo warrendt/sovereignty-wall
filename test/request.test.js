@@ -65,11 +65,11 @@ test('builds the origin from the Host header', () => {
   assert.equal(publicBaseUrl(req), 'http://localhost:3000');
 });
 
-test('honours X-Forwarded-Proto so Azure yields https', () => {
+test('honours X-Forwarded-Proto so a proxied request yields https', () => {
   const req = fakeRequest({
-    headers: { host: 'sovereignty-wall.azurewebsites.net', 'x-forwarded-proto': 'https' },
+    headers: { host: 'wall.example.com', 'x-forwarded-proto': 'https' },
   });
-  assert.equal(publicBaseUrl(req), 'https://sovereignty-wall.azurewebsites.net');
+  assert.equal(publicBaseUrl(req), 'https://wall.example.com');
 });
 
 test('prefers X-Forwarded-Host over Host', () => {
