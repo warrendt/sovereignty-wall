@@ -64,8 +64,6 @@ early arrivals do submit before the session starts.
 
 ---
 
----
-
 ## What was built
 
 Three audience-facing surfaces plus a moderation escape hatch, on Node 22 +
