@@ -1,8 +1,19 @@
 {
   "name": "sovereignty-wall",
   "version": "1.0.0",
-  "private": true,
-  "description": "Live audience word-wall for the Sovereignty session.",
+  "description": "Live audience word-wall: phones submit, a projector wall updates in real time.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/warrendt/sovereignty-wall.git"
+  },
+  "keywords": [
+    "word-wall",
+    "audience",
+    "sse",
+    "express",
+    "qr"
+  ],
   "type": "module",
   "main": "src/server.js",
   "engines": {

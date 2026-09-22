@@ -3,22 +3,18 @@
 A live audience word-wall for a session. The audience scans a QR code, answers two
 questions on their phone, and their words land on a projector wall in real time.
 
-## Live URLs
+## Surfaces
 
-| Surface | URL | What it's for |
+| Surface | Route | What it's for |
 | --- | --- | --- |
-| **Wall** | https://sovereignty-wall-7y580s.azurewebsites.net/ | Put this on the projector |
-| **Submit** | https://sovereignty-wall-7y580s.azurewebsites.net/submit | Where the audience lands |
-| **QR** | https://sovereignty-wall-7y580s.azurewebsites.net/qr | Full-screen QR — show this first |
-| **Admin** | https://sovereignty-wall-7y580s.azurewebsites.net/admin?key=… | Delete anything inappropriate, fast |
+| **Wall** | `/` | Put this on the projector |
+| **Submit** | `/submit` | Where the audience lands |
+| **QR** | `/qr` | Full-screen QR — show this first |
+| **Admin** | `/admin?key=…` | Delete anything inappropriate, fast |
 
-The admin key is **not** in this repo. It lives as an App Service app setting:
-
-```bash
-az webapp config appsettings list \
-  -g rg-sovereignty-wall -n sovereignty-wall-7y580s \
-  --query "[?name=='ADMIN_KEY'].value" -o tsv
-```
+The admin key is **never** stored in this repo. Supply it as the `ADMIN_KEY`
+environment variable wherever you run the app. If it is unset, the admin surface
+and the delete API fail closed (404).
 
 ## The two questions
 
@@ -26,7 +22,8 @@ az webapp config appsettings list \
 2. What would you want to leave this session with today?
 
 They are defined once, in `src/config.js`, and flow to the wall, the form and the
-API from there so they can never drift apart.
+API from there so they can never drift apart. Edit that file to run the wall with
+your own questions.
 
 ## Running it locally
 
@@ -40,35 +37,58 @@ node scripts/clear.mjs  http://localhost:3000 local-dev-key
 
 `scripts/verify.mjs` drives the real HTTP surface end to end — pages, assets, a
 live submission over SSE, admin deletion — and removes the answers it creates.
-It is safe to point at the live site.
+It is safe to point at a deployed instance.
 
 `scripts/clear.mjs` wipes every answer through the admin API. Use it right
 before a session starts; connected projectors update live over SSE. It refuses
 to delete anything if the admin key is wrong.
 
+## Configuration
+
+Every setting is an environment variable; see `.env.example` for a copyable list.
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `ADMIN_KEY` | *(empty)* | Enables the admin surface. Empty disables it entirely. |
+| `PORT` | `3000` | HTTP port. |
+| `DATA_DIR` | `./data` | Where `answers.json` is written. |
+| `MAX_ENTRIES` | `2000` | Cap on stored answers; oldest are evicted first. |
+| `RATE_LIMIT_MAX` | `10` | Submissions allowed per IP per window. |
+| `RATE_LIMIT_WINDOW_MS` | `60000` | Rate-limit window. |
+| `MAX_STREAM_CLIENTS` | `500` | Cap on concurrent SSE connections. |
+| `SSE_HEARTBEAT_MS` | `15000` | Heartbeat interval that keeps proxies from idling out streams. |
+
 ## How it works
 
 - **Node 22 + Express 5**, ESM, **no build step**. Plain CSS and vanilla JS served
-  statically, so `az webapp up` just works.
+  statically, so any plain `node src/server.js` host works.
 - **Two dependencies**, both pure JS: `express` and `qrcode`. Nothing needs
-  node-gyp, so Oryx builds cleanly.
+  node-gyp.
 - **Persistence** is a flat JSON file written atomically (temp file, fsync,
-  rename). `DATA_DIR` defaults to `/home/data` on App Service (which persists)
-  and `./data` locally.
+  rename), in `DATA_DIR`.
 - **Live updates** use Server-Sent Events, with automatic fallback to polling if
   `EventSource` fails or is unavailable. A heartbeat comment every 15s keeps
   proxies from killing idle connections.
 - **The QR is generated from the incoming request host** at runtime, so the same
-  code produces a working QR locally and in Azure with no edits.
+  code produces a working QR locally and when deployed, with no edits.
 
 ### Single instance, deliberately
 
-SSE fan-out is in-process, so **this app must not scale out**. The plan is pinned
-to one instance and the startup command is set explicitly to `node src/server.js`
-so the platform can't start it under PM2 in cluster mode.
+SSE fan-out is in-process, so **this app must not scale out**. Run exactly one
+instance, and start it directly with `node src/server.js` so a platform process
+manager cannot fork it into cluster mode.
 
-## Architecture
+## Documentation
 
-See [`docs/HANDOVER.md`](docs/HANDOVER.md) for the full write-up, the request/SSE
-flow diagram, the decisions behind the validation rules, and the pre-session
-runbook.
+See [`docs/OPERATIONS.md`](docs/OPERATIONS.md) for the full write-up: the
+request/SSE flow diagram, the decisions behind the validation rules, a deployment
+outline, and the pre-session runbook.
+
+## Contributing and security
+
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) — how to propose changes.
+- [`SECURITY.md`](SECURITY.md) — how to report a vulnerability.
+
+## Licence
+
+[MIT](LICENSE).

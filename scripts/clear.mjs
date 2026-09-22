@@ -1,7 +1,7 @@
 /**
- * Wipe every answer off a running wall — local or Azure.
+ * Wipe every answer off a running wall — local or deployed.
  *
- *   node scripts/clear.mjs https://example.azurewebsites.net <admin-key>
+ *   node scripts/clear.mjs https://your-wall.example.com <admin-key>
  *
  * Intended for the minutes before a session starts, when early arrivals have
  * already submitted and you want a blank wall. Deletes through the same admin

@@ -1,5 +1,5 @@
 /**
- * End-to-end verification against a running instance — local or Azure.
+ * End-to-end verification against a running instance — local or deployed.
  *
  *   node scripts/verify.mjs http://127.0.0.1:3000 <admin-key>
  *

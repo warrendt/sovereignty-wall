@@ -57,7 +57,7 @@ export const clientIp = (req) => {
 
 /**
  * Absolute origin for this request, derived at runtime so the QR code works
- * unchanged on localhost and on Azure.
+ * unchanged on localhost and behind a reverse proxy.
  *
  * The Host header is client-controllable, so we only echo it back when it
  * matches a strict hostname pattern.
